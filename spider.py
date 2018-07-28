@@ -18,12 +18,12 @@ class Spider:
         Spider.base_url = base_url
         Spider.domain_name = domain_name
         Spider.queue_file = Spider.project_name + '/queue.txt'
-        Spider.queue_file = Spider.project_name + '/crawled.txt'
+        Spider.crawled_file = Spider.project_name + '/crawled.txt'
         self.boot()
         self.crawl_page('First Spider', Spider.base_url)  # name of the first spider and the main page
 
     @staticmethod
-    def boot(self):
+    def boot():
         create_project_dir(Spider.project_name)
         create_data_files(Spider.project_name, Spider.base_url)
         Spider.queue = file_to_set(Spider.queue_file)
@@ -45,7 +45,8 @@ class Spider:
         html_string = ''
         try:
             response = urlopen(page_url)
-            if response.getheader('Content-Type') == 'text/html':
+            if response.info().getheader('Content-Type') == 'text/html':
+
                 html_bytes = response.read()
                 html_string = html_bytes.decode('utf-8')
             finder = LinkFinder(Spider.base_url, page_url)
